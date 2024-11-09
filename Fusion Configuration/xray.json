@@ -77,33 +77,41 @@
       {
         "type": "field",
         "domain": [
+          "geosite:google"
+        ],
+        "outboundTag": "direct"
+      }, //处理 google 域名配置（保证 Google Play 不受如下配置影响）
+      {
+        "type": "field",
+        "domain": [
           "geosite:cn"
         ],
         "outboundTag": "block"
-      }, //禁止代理中国国内域名的路由配置
+      }, //处理中国域名配置
       {
         "type": "field",
         "ip": [
           "geoip:cn"
         ],
         "outboundTag": "block"
-      }, //禁止代理中国国内 IP 的路由配置
+      }, //处理中国 IP 配置
       {
         "type": "field",
         "protocol": [
           "bittorrent"
         ],
         "outboundTag": "block"
-      } //禁用 BT 的路由配置
+      } //处理 BT 配置
     ]
   },
   "outbounds": [
     {
+      "tag": "direct",
       "protocol": "freedom",
       "settings": {
-        "domainStrategy": "UseIP"
+        "domainStrategy": "UseIP" //使用内置 DNS 服务器
       }
-    }, //默认出站使用内置 DNS 服务器配置
+    }, //直连配置（默认出站）
     {
       "tag": "block",
       "protocol": "blackhole",
@@ -112,7 +120,7 @@
           "type": "http"
         }
       }
-    } //禁止代理国内流量、禁用 BT 的处理配置。
+    } //屏蔽配置
   ]
 }
-//备注：如上为禁止代理中国国内流量、禁用 BT、使用定制 DNS 解析的服务端深度融合配置，符合自己需求的精细配置请参考官方资料自行修改。
+//备注：如上为使用定制 DNS 解析、屏蔽回中国流量及 BT 流量的服务端深度融合配置，符合自己需求的精细配置请参考官方资料自行修改。

@@ -1,4 +1,4 @@
-//禁止代理国内流量配置
+//屏蔽回中国流量配置
 //原配置：
 {
 //........<省略>........
@@ -14,7 +14,10 @@
     ]
   },
   "outbounds": [
-//........<省略>........
+    {
+      "protocol": "freedom",
+      "settings": {}
+    },
     {
       "tag": "block",
       "protocol": "blackhole",
@@ -32,28 +35,39 @@
       {
         "type": "field",
         "domain": [
+          "geosite:google"
+        ],
+        "outboundTag": "direct"
+      }, //处理 google 域名配置（保证 Google Play 不受如下配置影响）
+      {
+        "type": "field",
+        "domain": [
           "geosite:cn"
         ],
         "outboundTag": "block"
-      },
+      }, //处理中国域名配置
       {
         "type": "field",
         "ip": [
           "geoip:cn"
         ],
         "outboundTag": "block"
-      },
+      }, //处理中国 IP 配置
       {
         "type": "field",
         "protocol": [
           "bittorrent"
         ],
         "outboundTag": "block"
-      }
+      } //处理 BT 配置
     ]
   },
   "outbounds": [
-//........<省略>........
+    {
+      "tag": "direct",
+      "protocol": "freedom",
+      "settings": {}
+    }, //直连配置（默认出站）
     {
       "tag": "block",
       "protocol": "blackhole",
@@ -62,7 +76,7 @@
           "type": "http"
         }
       }
-    }
+    } //屏蔽配置
   ]
 }
-//备注：如上是禁止代理中国国内流量配置，若需要禁止代理其它国家国内流量配置请参考官方资料自行修改。
+//备注：如上为屏蔽回中国流量及 BT 流量配置，若要屏蔽回其它国家流量请参考官方资料自行修改。
